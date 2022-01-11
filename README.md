@@ -1,6 +1,6 @@
 # img2ascii
 Simple python script to convert given image to ASCII
-## Imports
-import os
-from PIL import Image
+## Imports\n
+import os\n
+from PIL import Image\n
 from blessed import Terminal
