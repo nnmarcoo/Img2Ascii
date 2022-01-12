@@ -3,9 +3,19 @@ from PIL import Image
 from blessed import Terminal
 t = Terminal()
 
+def colorize(r,g,b):
+  vals = {'black': (0,0,0), 'red': (255,0,0), 'green': (0,255,0), 'yellow': (255,255,0), 'blue': (0,0,255), 'magenta': (255,0,255), 'cyan': (0,255,255), 'white': (255,255,255)}
+  match = ''
+  dist = 256
+  for i in vals:
+    check = abs(vals[i][0] - r) + abs(vals[i][1] - g) + abs(vals[i][2] - b)
+    if check < dist:
+      dist = check
+      match = i
+  return match
+
 def img2ascii(img, scale):
   ch = """$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,"^`'. """
-  line = ''
   img = Image.open(img) 
   img = img.convert('RGB')
   p = img.load()
@@ -18,10 +28,10 @@ def img2ascii(img, scale):
     for x in range(0,w,skipx): #how many characters per line
       r,g,b = p[x,y][0], p[x,y][1], p[x,y][2]
       lum = int(((0.2126*r + 0.7152*g + 0.0722*b) / 256) * 70)
-      line += ch[lum]
-    #print(t.on_white(t.black(line)))
-    print(line)
-    line = ''
+      #print(ch[lum], end='')
+      colorize(r,g,b,ch[lum])
+      #print(t.black(ch[lum]), end='')
+    print()
 
 def clear():
   command = 'clear'
@@ -30,6 +40,7 @@ def clear():
   os.system(command)
 
 def main():
+  print(colorize(5,255,10))
   ask = True
   while ask:
       getFile = True
