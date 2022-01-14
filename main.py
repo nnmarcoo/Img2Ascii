@@ -18,7 +18,7 @@ def img2ascii(img, scale, bg, c):
       r,g,b = p[x,y][0], p[x,y][1], p[x,y][2]
       lum = int(((0.2126*r + 0.7152*g + 0.0722*b) / 256) * 70)
       #print(col(ch[lum]), end='')
-      print(ch[lum], end='')
+      #print(ch[lum], end='')
       #colorize(r,g,b,ch[lum])
       #print(t.black(ch[lum]), end='')
       if bg == 'W':
