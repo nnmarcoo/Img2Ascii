@@ -4,15 +4,59 @@ from blessed import Terminal
 from alive_progress import alive_bar
 t = Terminal()
 
-def toTxt():
-  pass
+def toCli(img, scale, bg, c, ch):
+  p = img.load()
+  w,h = img.width,img.height # get width and height of image
+  skipx = int(w / (w * (scale/100)))
+  skipy = int(h / (h * (scale/100)) * 2.3)
+  for y in range(0,h,skipy):
+    for x in range(0,w,skipx):
+      r,g,b = p[x,y][0], p[x,y][1], p[x,y][2]
+      lum = int(((0.2126*r + 0.7152*g + 0.0722*b) / 256) * 70)
+      if bg == 'W':
+        if c == 'Y':
+          color = t.color_rgb(r,g,b)
+          print(t.on_white(color(ch[lum])),end='')
+        else:
+          print(t.on_white(t.black(ch[lum])),end='')
+      elif bg == 'B':
+        if c == 'Y':
+          color = t.color_rgb(r,g,b)
+          print(t.on_black(color(ch[lum])),end='')
+        else:
+          print(t.on_black(t.white(ch[lum])),end='')
+      else:
+        if c == 'Y':
+          color = t.color_rgb(r,g,b)
+          bcolor = t.on_color_rgb(r-30,g-30,b-30)
+          print(bcolor(color(ch[lum])),end='')
+        else:
+          print(bcolor(t.white(ch[lum])),end='')
+    print()
+
+def toTxt(img, scale,ch):
+  p = img.load()
+  w,h = img.width,img.height # get width and height of image
+  skipx = int(w / (w * (scale/100)))
+  skipy = int(h / (h * (scale/100)) * 2.3)
+  if os.path.isfile('ASCIIoutput.txt'):
+    os.remove('ASCIIoutput.txt')
+  txt = open('ASCIIoutput.txt', 'w')
+  with alive_bar(int((w/skipx)*(h/skipy)), bar='classic', spinner='classic', stats=False) as bar:
+    for y in range(0,h,skipy):
+      for x in range(0,w,skipx):
+        r,g,b = p[x,y][0], p[x,y][1], p[x,y][2]
+        lum = int(((0.2126*r + 0.7152*g + 0.0722*b) / 256) * 70)
+        txt.write(ch[lum])
+        bar()
+      txt.write('\n')
 
 def toImg(img, scale, bg, c, ch):
   up = 10 
   fntsize = 15
   downscale = img.resize((int(img.width*(scale/100)), int(img.height*(scale/100))))
   upscale = downscale.resize((downscale.width*up, downscale.height*up))
-  i = upscale.load()
+  p = upscale.load()
   w,h = upscale.width,upscale.height
 
   if bg == 'B':
@@ -26,10 +70,10 @@ def toImg(img, scale, bg, c, ch):
   fnt = ImageFont.truetype('Arial.ttf', fntsize)
   d = ImageDraw.Draw(asciiimg)
 
-  with alive_bar(int((w/fntsize)*(h/fntsize)), bar='filling', spinner='vertical') as bar:
+  with alive_bar(int((w/fntsize)*(h/fntsize)), bar='filling', spinner='vertical', stats=False) as bar:
     for y in range(0,h,fntsize):
       for x in range(0,w,fntsize):
-        r,g,b = i[x,y][0], i[x,y][1], i[x,y][2]
+        r,g,b = p[x,y][0], p[x,y][1], p[x,y][2]
         lum = int(((0.2126*r + 0.7152*g + 0.0722*b) / 256) * 70)
         if c == 'Y':
           d.text((x,y), ch[::-1][lum], font=fnt, fill=(r, g, b))
@@ -45,25 +89,13 @@ def img2ascii(img, scale, bg, c, format):
   ch = """$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\|()1{}[]?-_+~<>i!lI;:,"^`'. """
   img = Image.open(img) 
   img = img.convert('RGB')
-  p = img.load()
-  w,h = img.width,img.height # get width and height of image
-  skipx = int(w / (w * (scale/100)))
-  skipy = int(h / (h * (scale/100)) * 2.3)
 
   if format == 'I':
     toImg(img, scale, bg, c, ch)
   elif format == 'T':
-    toTxt()
-
-
-  #elif format == 'T':
-    #if os.path.isfile('ASCIIoutput.txt'):
-     # os.remove('ASCIIoutput.txt')
- #   txt = open('ASCIIoutput.txt', 'w')
-      
-        
-  #if format == 'I':
-    #asciiimg.save('pil_text_font.png')
+    toTxt(img, scale, ch)
+  else:
+    toCli(img, scale, bg, c, ch)
 
 def clear():
   command = 'clear'
