@@ -26,9 +26,9 @@ def toCli(img, scale, bg, c, ch):
         else:
           print(t.on_black(t.white(ch[lum])),end='')
       else:
+        bcolor = t.on_color_rgb(r-30,g-30,b-30)
         if c == 'Y':
           color = t.color_rgb(r,g,b)
-          bcolor = t.on_color_rgb(r-30,g-30,b-30)
           print(bcolor(color(ch[lum])),end='')
         else:
           print(bcolor(t.white(ch[lum])),end='')
@@ -52,8 +52,8 @@ def toTxt(img, scale,ch):
       txt.write('\n')
 
 def toImg(img, scale, bg, c, ch):
-  up = 10 
-  fntsize = 15
+  up = 15 
+  fntsize = 20
   downscale = img.resize((int(img.width*(scale/100)), int(img.height*(scale/100))))
   upscale = downscale.resize((downscale.width*up, downscale.height*up))
   p = upscale.load()
@@ -69,7 +69,7 @@ def toImg(img, scale, bg, c, ch):
     asciiimg = darkness.enhance(.4)
   fnt = ImageFont.truetype('Arial.ttf', fntsize)
   d = ImageDraw.Draw(asciiimg)
-
+  
   with alive_bar(int((w/fntsize)*(h/fntsize)), bar='filling', spinner='vertical', stats=False) as bar:
     for y in range(0,h,fntsize):
       for x in range(0,w,fntsize):
@@ -103,28 +103,32 @@ def clear():
       command = 'cls'
   os.system(command)
 
+def desc():
+  print('This is a simple tool to convert images to ASCII.\n\nUsage:\n\tBG Color:\n\t [W] White background\n\t [B] Black background\n\t [O] Original image behind the ASCII\n\tExport Type:\n\t [I] Image file\n\t [T] Text file\n\t [C] Console\nWarning:\n\tThis calculation gets exponentially longer as the input gets larger')
+
 def main():
+  desc()
   ask = True
   while ask:
     getImg = True
     while getImg:
-      img = input('Enter an image to convert to ASCII: ')
+      img = input('\n→ Enter an image to convert to ASCII: ')
       if os.path.isfile(img):
         getImg = False
     getScale = True
     while getScale:
-      scale = input('Enter scale [1-100]: ')
+      scale = input('→ Enter scale [1-100]: ')
       if scale.isnumeric():
         if int(scale) < 101 and int(scale) > 0:
           getScale = False
     getBGC = True
     while getBGC:
-      BGC = input('Enter background color [W/B/O]: ').upper()
+      BGC = input('→ Enter background color [W/B/O]: ').upper()
       if BGC in 'WBO' and BGC != '':
         getBGC = False
     getExport = True
     while getExport:
-      export = input('Enter what you want to export to [I/C/T]: ').upper()
+      export = input('→ Enter what you want to export to [I/C/T]: ').upper()
       if export in 'ICT' and export != '':
         getExport = False
       if export == 'T':
@@ -133,7 +137,7 @@ def main():
       else:
         getColor = True  
     while getColor:
-      isColor = input('Enter color preference [Y/N]: ').upper()
+      isColor = input('→ Enter color preference [Y/N]: ').upper()
       if isColor in 'YN' and isColor != '':
         getColor = False
         img2ascii(img, int(scale), BGC, isColor, export)
