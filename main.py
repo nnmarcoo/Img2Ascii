@@ -2,7 +2,7 @@ import os
 from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageEnhance
 from blessed import Terminal
 from alive_progress import alive_bar
-t = Terminal()
+t = Terminal() #object creation usage :O
 
 def toCli(img, scale, bg, c, ch):
   p = img.load()
@@ -104,7 +104,7 @@ def clear():
   os.system(command)
 
 def desc():
-  print('This is a simple tool to convert images to ASCII.\n\nUsage:\n\tBG Color:\n\t [W] White background\n\t [B] Black background\n\t [O] Original image behind the ASCII\n\tExport Type:\n\t [I] Image file\n\t [T] Text file\n\t [C] Console\nWarning:\n\tThis calculation gets exponentially longer as the input gets larger')
+  print('This is a simple tool to convert images to ASCII.\n\nUsage:\n\tBG Color:\n\t [W] White background\n\t [B] Black background\n\t [O] Original image behind the ASCII\n\tExport Type:\n\t [I] Image file\n\t [T] Text file\n\t [C] Console\nWarning:\n\tThis calculation gets exponentially longer as the input gets larger\n\tYou will need to lower the scale for large images')
 
 def main():
   desc()
