@@ -92,8 +92,10 @@ def img2ascii(img, scale, bg, c, format):
 
   if format == 'I':
     toImg(img, scale, bg, c, ch)
+    print('\nImage has been saved to ASCIIoutput.png')
   elif format == 'T':
     toTxt(img, scale, ch)
+    print('\nImage has been saved to ASCIIoutput.txt')
   else:
     toCli(img, scale, bg, c, ch)
 
@@ -104,7 +106,7 @@ def clear():
   os.system(command)
 
 def desc():
-  print('This is a simple tool to convert images to ASCII.\n\nUsage:\n\tBG Color:\n\t [W/w] White background\n\t [B/b] Black background\n\t [O/o] Original image behind the ASCII\n\tExport Type:\n\t [I/i] Image file\n\t [T/t] Text file\n\t [C/c] Console\n\t Image or text outputs will export to file name ASCIIoutput\nWarning:\n\tThis calculation gets exponentially longer as the input gets larger\n\tYou will need to lower the scale for large images')
+  print('This is a simple tool to convert images to ASCII.\n\nUsage:\n\tBG Color:\n\t [W/w] White background\n\t [B/b] Black background\n\t [O/o] Original image behind the ASCII\n\tExport Type:\n\t [I/i] Image file\n\t [T/t] Text file\n\t [C/c] Console\n\t Image or text outputs will export to file name ASCIIoutput\nWarning:\n\tThis calculation gets exponentially longer as the input gets larger\n\tYou will need to lower the scale for large images\nInput Example:\n\trocket.png, 25, b, i, y\n\tcar.jpg, 10, b, c, n\n\tcool.png, 50, b, i, y')
 
 def main():
   desc()
