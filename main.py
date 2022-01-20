@@ -104,7 +104,7 @@ def clear():
   os.system(command)
 
 def desc():
-  print('This is a simple tool to convert images to ASCII.\n\nUsage:\n\tBG Color:\n\t [W] White background\n\t [B] Black background\n\t [O] Original image behind the ASCII\n\tExport Type:\n\t [I] Image file\n\t [T] Text file\n\t [C] Console\nWarning:\n\tThis calculation gets exponentially longer as the input gets larger\n\tYou will need to lower the scale for large images')
+  print('This is a simple tool to convert images to ASCII.\n\nUsage:\n\tBG Color:\n\t [W/w] White background\n\t [B/b] Black background\n\t [O/o] Original image behind the ASCII\n\tExport Type:\n\t [I/i] Image file\n\t [T/t] Text file\n\t [C/c] Console\n\t Image or text outputs will export to file name ASCIIoutput\nWarning:\n\tThis calculation gets exponentially longer as the input gets larger\n\tYou will need to lower the scale for large images')
 
 def main():
   desc()
