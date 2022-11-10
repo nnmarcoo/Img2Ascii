@@ -1,5 +1,5 @@
 # img2ascii
-Simple python script to convert given image to ASCII
+python script to convert given image to ASCII art
 # Imports
 ```
 import os
